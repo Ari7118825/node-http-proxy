@@ -4,21 +4,18 @@ const { URL } = require('url');
 const zlib = require('zlib');
 
 // --- Configuration ---
-const PORT = process.env.PORT || 8080;
+// The port your proxy server will run on.
+const PORT = 8080;
 
-// The DEFAULT target if no hostname is specified in the URL path.
-const DEFAULT_TARGET_URL = process.env.TARGET_URL;
+// The default website you want the proxy to load.
+// IMPORTANT: Change this to the URL you want to proxy!
+const DEFAULT_TARGET_URL = 'https://discord.com';
 
-// Render provides this automatically. It's the proxy's own public hostname.
-const PROXY_HOSTNAME = process.env.RENDER_EXTERNAL_URL 
-    ? new URL(process.env.RENDER_EXTERNAL_URL).hostname 
-    : `localhost:${PORT}`;
-
-// --- Validation ---
-if (!DEFAULT_TARGET_URL) {
-  console.error("FATAL ERROR: The 'TARGET_URL' environment variable is not set.");
-  process.exit(1);
-}
+// The public-facing hostname of your proxy.
+// For local testing, this is fine.
+// IMPORTANT: For deployment, you MUST change this to your actual public hostname
+// (e.g., 'your-app.onrender.com' or your domain).
+const PROXY_HOSTNAME = `localhost:${PORT}`;
 
 const defaultTarget = new URL(DEFAULT_TARGET_URL);
 
@@ -197,3 +194,4 @@ server.listen(PORT, () => {
   console.log(`Default target: ${DEFAULT_TARGET_URL}`);
   console.log(`Proxy public hostname: ${PROXY_HOSTNAME}`);
 });
+
